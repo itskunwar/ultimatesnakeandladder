@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Snake and Ladder</title>
+        <link href="designs/snl.css" rel="stylesheet">
+    </head>
+    <body>
+        <div>
+            <div class="logo">
+                <h1>SNAKES</h1>
+                <img src="Pics/snakes&ladders.png" alt="game_logo">
+                <h1>LADDERS</h1>
+                
+               
+
+            </div>
+            
+            <div>
+                <div class="board">
+                    <div style="height:42px;"> 
+                        <img src="Pics/Snake.png" alt="snake_pic">
+                        <h2>BOARD</h2>
+                        <img src="Pics/Ladder.png" alt="ladder_pic" style="margin-left:8px"> 
+                    </div>
+                   <div id="row1" style="margin-left: 20px; ">
+                       <script>
+                            for(let i=100;i>=1;i--){
+                                var boxes = document.createElement("div");
+                                boxes.setAttribute('class','numbox');
+                                boxes.setAttribute('id', 'box'+i);
+                                boxes.innerHTML=i;
+                                if( (i>=1 &&i<=10) || (i>=21&&i<=30) || (i>=41&&i<=50) || (i>=61&&i<=70) || (i>=81&&i<=90))
+                                {
+                                    boxes.style.cssFloat="right";
+                                    if( i%10==0)
+                                    {
+                                        boxes.style.marginRight="36.5px";
+                                    }
+                                }
+                                var element = document.getElementById("row1");
+                                element.appendChild(boxes);
+                            }
+                        </script>
+                   </div>
+                        
+                        
+                        
+                     
+                    
+                </div>
+                <div class="roller ">
+                    <div style="height: 80px">
+                        <img src="Pics/dice.PNG" alt="dice_pic" style="margin-left: 30%" id="dice">
+                        <h2 style="float:left;margin-left: 8px">ROLLER</h2>
+                        <img src="Pics/dice.PNG" alt="dice_pic" id="dice1">
+                    </div>
+
+                    <div id="turn">
+                        PLAYER 1 TURN
+                    </div>
+
+                    <div id="rollerResult">
+                        0
+                    </div>
+
+                    <div class="buttondiv">
+                        <button id="button" onclick="getRandom()">ROLL THE DICE</button>
+                    </div>
+
+                    <script>
+                        var i=1;
+                        var turncount=1;
+                        var player1=0;
+                        var player2=0;
+                        var drollcount=1;
+                        var p1start=0;
+                        var p2start=0;
+                        var p1d=0;
+                        var p2d=0;
+                        var p1positions=[];
+                        var p2positions=[];
+                        function getRandom(){
+                        if(player1==500 || player2==500)
+                            alert('GAME FINISHED! REFRESH THE PAGE TO PLAY AGAIN');
+                        else{    
+                            if(drollcount%2==1)                                //Dice Animation
+                            {
+                                document.getElementById("dice").style.transform="rotate(360deg)";
+                                document.getElementById("dice1").style.transform="rotate(360deg)";
+                            }
+                            else
+                            {
+                                document.getElementById("dice").style.transform="rotate(-360deg)";
+                                document.getElementById("dice1").style.transform="rotate(-360deg)";
+                            }
+                            drollcount++;
+                            var no;
+                            
+                            no=Math.floor(Math.random()*6 + 1);                  //Getting Dice Result
+                            document.getElementById("rollerResult").innerHTML=no;
+
+                            if(turncount%2==1)
+                            {
+                                if(p1start==0)                                   //Check P1 Opening
+                                {   
+                                    if(no==6)
+                                        p1start=1;
+                                        
+                                }
+                                if(p1start==1)
+                                {
+                                    p1d++;
+                                }
+                                if(p1d>=2)
+                                {
+                                    player1+=no;
+                                    player1=checkif(player1);
+                                    p1positions.push(player1);
+                                    if(player1>=100)
+                                    {
+                                        document.getElementById("box100").style.backgroundColor="red";
+                                        document.getElementById("box100").style.color="white";    
+                                        let x=p1positions.shift();
+                                        document.getElementById("box"+x).style.backgroundColor="rgba(223, 202, 202, 0.932)";
+                                        document.getElementById("box"+x).style.color="black";
+                                        player1=500;
+                                        document.getElementById("turn").innerHTML="GAME FINISHED<br> PLAYER 1 WON";
+                                        document.getElementById("turn").style.backgroundColor="black";
+                                        
+                                    }
+                                    document.getElementById("box"+player1).style.backgroundColor="red";
+                                    document.getElementById("box"+player1).style.color="white";
+                                    document.getElementById("p1color").style.display="none";
+                                    if(p1d>=3)
+                                    {
+                                        let x=p1positions.shift();
+                                        document.getElementById("box"+x).style.backgroundColor="rgba(223, 202, 202, 0.932)";
+                                        document.getElementById("box"+x).style.color="black";
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if(p2start==0) //Check P2 Opening
+                                {
+                                    if(no==6)
+                                        p2start=1;
+                                }
+                                if(p2start==1)
+                                {
+                                    p2d++;
+                                }
+                                if(p2d>=2)
+                                {
+                                    player2+=no;
+                                    player2=checkif(player2);
+                                    p2positions.push(player2);
+                                    if(player2>=100)
+                                    {
+                                        document.getElementById("box100").style.backgroundColor="blue";
+                                        document.getElementById("box100").style.color="white";    
+                                        let x=p2positions.shift();
+                                        document.getElementById("box"+x).style.backgroundColor="rgba(223, 202, 202, 0.932)";
+                                        document.getElementById("box"+x).style.color="black";
+                                        player2=500;
+                                        document.getElementById("turn").innerHTML="GAME FINISHED PLAYER 2 WON";
+                                        document.getElementById("turn").style.backgroundColor="black";
+                                        doc
+                                        
+                                    }
+                                    document.getElementById("box"+player2).style.backgroundColor="blue";
+                                    document.getElementById("box"+player2).style.color="white";
+                                    document.getElementById("p2color").style.display="none";
+                                    if(p2d>=3)
+                                    {
+                                        let x=p2positions.shift();
+                                        document.getElementById("box"+x).style.backgroundColor="rgba(223, 202, 202, 0.932)";
+                                        document.getElementById("box"+x).style.color="black";
+                                    }
+                                }
+                            }
+                            if(player1>0 && player2>0 && player1==player2)
+                                document.getElementById("box"+player1).style.backgroundColor="black";
+                            if(no!=6)
+                            {   turncount++;
+                                if(i%2==0)
+                                {
+                                    document.getElementById("turn").innerHTML="PLAYER 1 TURN";
+                                    document.getElementById("turn").style.backgroundColor="red";
+                                }
+                                else{
+                                    document.getElementById("turn").innerHTML="PLAYER 2 TURN";
+                                    document.getElementById("turn").style.backgroundColor="blue";
+                                }
+                                i++;
+                            }
+                            
+
+                        }
+                    }
+                        function checkif(x)
+                        {
+                            if(x==8)
+                                return 29;
+                            else if(x==22)
+                                return 61;
+                            else if(x==54)
+                                return 68;
+                            else if(x==65)
+                                return 97;
+                            else if(x==72)
+                                return 93;
+                            else if(x==23)
+                                return 17;
+                            else if(x==45)
+                                return 5;
+                            else if(x==52)
+                                return 33;
+                            else if(x==67)
+                                return 28;
+                            else if(x==90)
+                                return 50;
+                            else if(x==99)
+                                return 24;
+                            else    
+                                return x;
+                        }
+                    </script>
+                    <div id="p1color">PLAYER 1</div>
+                    <div id="p2color">PLAYER 2</div>
+                </div>
+                 
+            </div>
+            
+        </div>
+        <div>
+            <img src="Pics/Ladder.png" alt="8-29ladder" class="ladder_at_8">
+        </div>
+        <div>
+            <img src="Pics/Ladder.png" alt="54-68ladder" class="ladder_at_54">
+        </div>
+        <div>
+            <img src="Pics/Ladder.png" alt="54-68ladder" class="ladder_at_22">
+        </div>
+        <div>
+            <img src="Pics/Ladder.png" alt="54-68ladder" class="ladder_at_72">
+        </div>
+        <div>
+                <img src="Pics/Ladder.png" alt="54-68ladder" class="ladder_at_65">
+        </div>
+        <div>
+                <img src="Pics/cutsnake.png" alt="54-68ladder" class="snake_at_90">
+        </div>
+        <div>
+                <img src="Pics/cutsnake.png" alt="54-68ladder" class="snake_at_99">
+        </div>
+        <div>
+                <img src="Pics/cutsnake.png" alt="54-68ladder" class="snake_at_67">
+        </div>
+        <div>
+                <img src="Pics/cutsnake.png" alt="54-68ladder" class="snake_at_52">
+        </div>
+        <div>
+                <img src="Pics/cutsnake.png" alt="54-68ladder" class="snake_at_45">
+        </div>
+        <div>
+                <img src="Pics/cutsnake.png" alt="54-68ladder" class="snake_at_23">
+        </div>
+       
+        
+    </body>
+</html>
+
+                            
